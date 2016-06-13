@@ -8,17 +8,14 @@ Issues to track activity.
 
 Tasks to do:
 
-* Go through and fix all the code sequences that autoconversion 
-missed or messed up - fix any Python 2.0 and then run the 
-code to verify the output
+* Fix all the sample code in the code3 folder - please leave the 
+code folder alone - it will remain Python 2.0 forever
 
-* Fix the preface rendering in chapters
+* Go through the chapters and fix all the code sequences 
+that autoconversion missed or messed up - fix any Python 2.0 
+and then run the code to verify the output
 
 * Double check the output of the interactive sequences
-
-* Redraw all figures in OmniGraffle
-
-* Fix all the sample code in the code3 folder
 
 * Make a new awesome cover
 
@@ -27,7 +24,6 @@ code to verify the output
 * Add HTML Server chapter if time permits
 
 * Add Graphical UI QT chapter if time permits
-
 
 And many other things...
 

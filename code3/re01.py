@@ -1,8 +1,7 @@
-# Search for lines that start with From and have an at sign
+# Search for lines that contain 'From'
 import re
 hand = open('mbox-short.txt')
 for line in hand:
     line = line.rstrip()
-    if re.search('From:', line) : 
+    if re.search('From:', line):
         print(line)
-

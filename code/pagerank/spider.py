@@ -28,7 +28,7 @@ if row is not None:
     print "Restarting existing crawl.  Remove spider.sqlite to start a fresh crawl."
 else :
     starturl = raw_input('Enter web url or enter: ')
-    if ( len(starturl) < 1 ) : starturl = 'http://www.dr-chuck.com/'
+    if ( len(starturl) < 1 ) : starturl = 'http://python-data.dr-chuck.net/'
     if ( starturl.endswith('/') ) : starturl = starturl[:-1]
     web = starturl
     if ( starturl.endswith('.htm') or starturl.endswith('.html') ) :
@@ -72,7 +72,12 @@ while True:
     # If we are retrieving this page, there should be no links from it
     cur.execute('DELETE from Links WHERE from_id=?', (fromid, ) )
     try:
-        document = urllib.urlopen(url, context=scontext)
+        # Deal with SSL certificate anomalies Python > 2.7
+        # scontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+        # document = urllib.urlopen(url, context=scontext)
+
+        # Normal Unless you encounter certificate problems
+        document = urllib.urlopen(url)
 
         html = document.read()
         if document.getcode() != 200 :
@@ -81,8 +86,7 @@ while True:
 
         if 'text/html' != document.info().gettype() :
             print "Ignore non text/html page"
-            cur.execute('DELETE FROM Pages WHERE url=?', ( url, ) ) 
-            cur.execute('UPDATE Pages SET error=0 WHERE url=?', (url, ) )
+            cur.execute('UPDATE Pages SET error=-1 WHERE url=?', (url, ) )
             conn.commit()
             continue
 
@@ -120,7 +124,7 @@ while True:
         # print href
         if ( len(href) < 1 ) : continue
 
-		# Check if the URL is in any of the webs
+        # Check if the URL is in any of the webs
         found = False
         for web in webs:
             if ( href.startswith(web) ) :

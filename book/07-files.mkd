@@ -22,10 +22,10 @@ power is turned off, anything stored in either the CPU or main memory is
 erased. So up to now, our programs have just been transient fun
 exercises to learn Python.
 
-![image](figs2/arch3)
+![Secondary Memory](height=2.5in@../images/arch)
 
 In this chapter, we start to work with *Secondary Memory*
-(or files). Secondary memory is not erased even when the power is turned
+(or files). Secondary memory is not erased when the power is turned
 off. Or in the case of a USB flash drive, the data we write from our
 programs can be removed from the system and transported to another
 system.
@@ -49,11 +49,11 @@ stored. When you open a file, you are asking the operating system to
 find the file by name and make sure the file exists. In this example, we
 open the file `mbox.txt`, which should be stored in the same
 folder that you are in when you start Python. You can download this file
-from [www.pythonlearn.com/code3/mbox.txt](www.pythonlearn.com/code3/mbox.txt)
+from [www.pythonlearn.com/code3/mbox.txt](http://www.pythonlearn.com/code3/mbox.txt)
 
     >>> fhand = open('mbox.txt')
     >>> print(fhand)
-    <open file 'mbox.txt', mode 'r' at 0x1005088b0>
+    <_io.TextIOWrapper name='mbox.txt' mode='r' encoding='cp1252'>
 
 \index{file handle}
 
@@ -63,7 +63,7 @@ contained in the file, but instead it is a "handle" that we can use to
 read the data. You are given a handle if the requested file exists and
 you have the proper permissions to read the file.
 
-![image](figs2/handle)
+![A File Handle](height=2.0in@../images/handle)
 
 If the file does not exist, `open` will fail with a traceback
 and you will not get a handle to access the contents of the file:
@@ -71,7 +71,7 @@ and you will not get a handle to access the contents of the file:
     >>> fhand = open('stuff.txt')
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    IOError: [Errno 2] No such file or directory: 'stuff.txt'
+    FileNotFoundError: [Errno 2] No such file or directory: 'stuff.txt'
 
 Later we will use `try` and `except` to deal more
 gracefully with the situation where we attempt to open a file that does
@@ -85,19 +85,23 @@ string can be thought of as a sequence of characters. For example, this
 is a sample of a text file which records mail activity from various
 individuals in an open source project development team:
 
-`From stephen.marquard@uct.ac.za Sat Jan  5 09:14:16 2008`\
-`Return-Path: <postmaster@collab.sakaiproject.org>`\
-`Date: Sat, 5 Jan 2008 09:12:18 -0500`\
-`To: source@collab.sakaiproject.org`\
-`From: stephen.marquard@uct.ac.za`\
-`Subject: [sakai] svn commit: r39772 - content/branches/`\
-`Details: http://source.sakaiproject.org/viewsvn/?view=rev&rev=39772`\
+`From stephen.marquard@uct.ac.za Sat Jan  5 09:14:16 2008`\
+`Return-Path: <postmaster@collab.sakaiproject.org>`\
+`Date: Sat, 5 Jan 2008 09:12:18 -0500`\
+`To: source@collab.sakaiproject.org`\
+`From: stephen.marquard@uct.ac.za`\
+`Subject: [sakai] svn commit: r39772 - content/branches/`\
+`Details: http://source.sakaiproject.org/viewsvn/?view=rev&rev=39772`\
 `...`
 
 The entire file of mail interactions is available from
-[www.pythonlearn.com/code3/mbox.txt](www.pythonlearn.com/code3/mbox.txt) and a
-shortened version of the file is available from
-[www.pythonlearn.com/code3/mbox-short.txt](www.pythonlearn.com/code3/mbox-short.txt).
+
+[www.pythonlearn.com/code3/mbox.txt](http://www.pythonlearn.com/code3/mbox.txt)
+
+and a shortened version of the file is available from
+
+[www.pythonlearn.com/code3/mbox-short.txt](http://www.pythonlearn.com/code3/mbox-short.txt)
+
 These files are in a standard format for a file containing multiple mail
 messages. The lines which start with "From " separate the messages and
 the lines which start with "From:" are part of the messages. For more
@@ -150,14 +154,10 @@ While the *file handle* does not contain the data for the
 file, it is quite easy to construct a `for` loop to read
 through and count each of the lines in a file:
 
-    fhand = open('mbox.txt')
-    count = 0
-    for line in fhand:
-        count = count + 1
-    print 'Line Count:', count
-
-    python open.py
-    Line Count: 132045
+\VerbatimInput{../code3/open.py}
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 We can use the file handle as the sequence in our `for` loop.
 Our `for` loop simply counts the number of lines in the file
@@ -226,10 +226,10 @@ started with the prefix "From:", we could use the string method
 *startswith* to select only those lines with the desired
 prefix:
 
-    fhand = open('mbox-short.txt')
-    for line in fhand:
-        if line.startswith('From:') :
-            print(line)
+\VerbatimInput{../code3/search1.py}
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 When this program runs, we get the following output:
 
@@ -254,11 +254,10 @@ We could use line slicing to print all but the last character, but a
 simpler approach is to use the *rstrip* method which
 strips whitespace from the right side of a string as follows:
 
-    fhand = open('mbox-short.txt')
-    for line in fhand:
-        line = line.rstrip()
-        if line.startswith('From:') :
-            print(line)
+\VerbatimInput{../code3/search2.py}
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 When this program runs, we get the following output:
 
@@ -280,14 +279,10 @@ interesting line, we do something with that line.
 We can structure the loop to follow the pattern of skipping
 uninteresting lines as follows:
 
-    fhand = open('mbox-short.txt')
-    for line in fhand:
-        line = line.rstrip()
-        # Skip 'uninteresting lines'
-        if not line.startswith('From:') :
-            continue
-        # Process our 'interesting' line
-        print(line)
+\VerbatimInput{../code3/search3.py}
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 The output of the program is the same. In English, the uninteresting
 lines are those which do not start with "From:", which we skip using
@@ -302,12 +297,10 @@ the string was not found, we can write the following loop to show lines
 which contain the string "@uct.ac.za" (i.e., they come from the
 University of Cape Town in South Africa):
 
-    fhand = open('mbox-short.txt')
-    for line in fhand:
-        line = line.rstrip()
-        if line.find('@uct.ac.za') == -1 :
-            continue
-        print(line)
+\VerbatimInput{../code3/search4.py}
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 Which produces the following output:
 
@@ -332,13 +325,10 @@ our program on different files without changing the Python code.
 This is quite simple to do by reading the file name from the user using
 `raw_input` as follows:
 
-    fname = input('Enter the file name: ')
-    fhand = open(fname)
-    count = 0
-    for line in fhand:
-        if line.startswith('Subject:') :
-            count = count + 1
-    print('There were', count, 'subject lines in', fname)
+\VerbatimInput{../code3/search6.py}
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 We read the file name from the user and place it in a variable named
 `fname` and open that file. Now we can run the program
@@ -370,17 +360,17 @@ What if our user types something that is not a file name?
     Traceback (most recent call last):
       File "search6.py", line 2, in <module>
         fhand = open(fname)
-    IOError: [Errno 2] No such file or directory: 'missing.txt'
+    FileNotFoundError: [Errno 2] No such file or directory: 'missing.txt'
 
     python search6.py
     Enter the file name: na na boo boo
     Traceback (most recent call last):
       File "search6.py", line 2, in <module>
         fhand = open(fname)
-    IOError: [Errno 2] No such file or directory: 'na na boo boo'
+    FileNotFoundError: [Errno 2] No such file or directory: 'na na boo boo'
 
-Do not laugh, users will eventually do every possible thing they can do
-to break your programs—either on purpose or with malicious intent. As a
+Do not laugh. Users will eventually do every possible thing they can do
+to break your programs, either on purpose or with malicious intent. As a
 matter of fact, an important part of any software development team is a
 person or group called *Quality Assurance* (or QA for
 short) whose very job it is to do the craziest things possible in an
@@ -406,18 +396,10 @@ using the `try`/`except` structure. We need to
 assume that the `open` call might fail and add recovery code
 when the `open` fails as follows:
 
-    fname = input('Enter the file name: ')
-    try:
-        fhand = open(fname)
-    except:
-        print('File cannot be opened:', fname)
-        exit()
-
-    count = 0
-    for line in fhand:
-        if line.startswith('Subject:') :
-            count = count + 1
-    print('There were', count, 'subject lines in', fname)
+\VerbatimInput{../code3/search7.py}
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 The `exit` function terminates the program. It is a function
 that we call that never returns. Now when our user (or QA team) types in
@@ -455,17 +437,19 @@ parameter:
 
     >>> fout = open('output.txt', 'w')
     >>> print(fout)
-    <open file 'output.txt', mode 'w' at 0xb7eb2410>
+    <_io.TextIOWrapper name='output.txt' mode='w' encoding='cp1252'>
 
 If the file already exists, opening it in write mode clears out the old
 data and starts fresh, so be careful! If the file doesn't exist, a new
 one is created.
 
 The `write` method of the file handle object puts data into
-the file.
+the file, returning the number of characters written. The default write
+mode is text for writing (and reading) strings.
 
     >>> line1 = "This here's the wattle,\n"
     >>> fout.write(line1)
+    24
 
 \index{newline}
 
@@ -479,6 +463,7 @@ the `write` method does not add the newline automatically.
 
     >>> line2 = 'the emblem of our land.\n'
     >>> fout.write(line2)
+    24
 
 When you are done writing, you have to close the file to make sure that
 the last bit of data is physically written to the disk so it will not be
@@ -582,12 +567,13 @@ program will look as follows:
          SAT, 05 JAN 2008 09:14:16 -0500
 
 You can download the file from
-[www.pythonlearn.com/code3/mbox-short.txt](www.pythonlearn.com/code3/mbox-short.txt)
+
+[www.pythonlearn.com/code3/mbox-short.txt](http://www.pythonlearn.com/code3/mbox-short.txt)
 
 Exercise 2: Write a program to prompt for a file name, and then read
 through the file and look for lines of the form:
 
-`X-DSPAM-Confidence: `*` 0.8475`*
+`X-DSPAM-Confidence: `**` 0.8475`**
 
 When you encounter a line that starts with "X-DSPAM-Confidence:" pull
 apart the line to extract the floating-point number on the line. Count
@@ -606,7 +592,6 @@ Test your file on the `mbox.txt` and
 
 Exercise 3: Sometimes when programmers get bored or want to have a bit
 of fun, they add a harmless *Easter Egg* to their program
-([en.wikipedia.org/wiki/Easter\_egg\_(media)](en.wikipedia.org/wiki/Easter_egg_(media))).
 Modify the program that prompts the user for the file name so that it
 prints a funny message when the user types in the exact file name "na na
 boo boo". The program should behave normally for all other files which
@@ -624,5 +609,6 @@ exist and don't exist. Here is a sample execution of the program:
     Enter the file name: na na boo boo
     NA NA BOO BOO TO YOU - You have been punk'd!
 
-We are not encouraging you to put Easter Eggs in your programs—this is
+We are not encouraging you to put Easter Eggs in your programs; this is
 just an exercise.
+

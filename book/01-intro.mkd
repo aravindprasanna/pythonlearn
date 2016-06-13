@@ -1,9 +1,8 @@
-% Python 3.0 For Informatics : Exploring Information
-% Charles Severance
-%
+% Python for Everybody 
+% Exploring Data using Python 3
+% Charles R. Severance
 
 Why should you learn to write programs?
-
 =======================================
 
 Writing programs (or programming) is a very creative and rewarding
@@ -12,7 +11,8 @@ your living to solving a difficult data analysis problem to having fun
 to helping someone else solve a problem. This book assumes that
 *everyone* needs to know how to program, and that once you know how to
 program you will figure out what you want to do with your newfound
-skills.
+skills.^[ This book is being converted from Python 2.0 to Python 3.0. 
+If you want to help see http://www.pythonlearn.com/book/]
 
 We are surrounded in our daily lives with computers ranging from laptops
 to cell phones. We can think of these computers as our "personal
@@ -20,7 +20,7 @@ assistants" who can take care of many things on our behalf. The hardware
 in our current-day computers is essentially built to continuously ask us
 the question, "What would you like me to do next?"
 
-![Personal Digital Assistant](../images/pda)
+![Personal Digital Assistant](height=1.0in@../images/pda)
 
 Programmers add an operating system and a set of applications to the
 hardware and we end up with a Personal Digital Assistant that is quite
@@ -42,9 +42,11 @@ true, reading and understanding text from a piece of paper is hard for a
 computer to do but counting the words and telling you how many times the
 most used word was used is very easy for the computer:
 
+~~~~ {.python}
     python words.py
     Enter file:words.txt
     to 16
+~~~~
 
 Our "personal information analysis assistant" quickly told us that the
 word "to" was used sixteen times in the first three paragraphs of this
@@ -74,7 +76,7 @@ your choice.
 If we think of programs as the creative output of groups of programmers,
 perhaps the following figure is a more sensible version of our PDA:
 
-![image](figs2/pda2)
+![Programmers Talking to You](height=1.0in@../images/pda2)
 
 For now, our primary motivation is not to make money or please end
 users, but instead for us to be more productive in handling the data and
@@ -94,7 +96,7 @@ computers to develop software, we need to learn a small amount about how
 computers are built. If you were to take apart your computer or cell
 phone and look deep inside, you would find the following parts:
 
-![image](figs2/arch)
+![Hardware Archicture](height=1.75in@../images/arch)
 
 The high-level definitions of these parts are as follows:
 
@@ -138,7 +140,7 @@ data you get from the solution. As a programmer you will mostly be
 tell the CPU to use the main memory, secondary memory, network, or the
 input/output devices.
 
-![image](figs2/arch2)
+![Where Are You?](height=1.75in@../images/arch2)
 
 You need to be the person who answers the CPU's "What next?" question.
 But it would be very uncomfortable to shrink you down to 5mm tall and
@@ -153,7 +155,7 @@ Understanding programming
 
 In the rest of this book, we will try to turn you into a person who is
 skilled in the art of programming. In the end you will be a
-*programmer* — perhaps not a professional programmer, but
+*programmer* - perhaps not a professional programmer, but
 at least you will have the skills to look at a data/information analysis
 problem and develop a program to solve the problem.
 
@@ -215,7 +217,7 @@ a reserved word. For example, if you say, "I wish more people would walk
 to improve their overall health", what most dogs likely hear is, "blah
 blah blah *walk* blah blah blah blah." That is because
 "walk" is a reserved word in dog language. Many might suggest that the
-language between humans and cats has no reserved words[^<http://xkcd.com/231/>].
+language between humans and cats has no reserved words^[<http://xkcd.com/231/>].
 
 The reserved words in the language where humans talk to Python include
 the following:
@@ -236,10 +238,12 @@ but for now we will focus on the Python equivalent of "speak" (in
 human-to-dog language). The nice thing about telling Python to speak is
 that we can even tell it what to say by giving it a message in quotes:
 
+~~~~ {.python}
     print('Hello world!')
+~~~~
 
 And we have even written our first syntactically correct Python
-sentence. Our sentence starts with the funcction *print* 
+sentence. Our sentence starts with the function *print* 
 followed by a string of text of our choosing enclosed in single quotes.
 
 Conversing with Python
@@ -252,7 +256,7 @@ language skills.
 Before you can converse with Python, you must first install the Python
 software on your computer and learn how to start Python on your
 computer. That is too much detail for this chapter so I suggest that you
-consult [www.pythonlearn.com](www.pythonlearn.com) where I have detailed
+consult [www.pythonlearn.com](http://www.pythonlearn.com) where I have detailed
 instructions and screencasts of setting up and starting Python on
 Macintosh and Windows systems. At some point, you will be in a terminal
 or command window and you will type *python* and the
@@ -261,12 +265,14 @@ somewhat as follows:
 
 \index{interactive mode}
 
+~~~~ {.python}
     Python 3.5.1 (v3.5.1:37a07cee5969, Dec  6 2015, 01:54:25)
     [MSC v.1900 64 bit (AMD64)] on win32
     Type "help", "copyright", "credits" or "license" for more information.
     >>>
+~~~~
 
-The `\>\>\>` prompt is the Python interpreter's way of asking
+The `>>>` prompt is the Python interpreter's way of asking
 you, "What do you want me to do next?" Python is ready to have a
 conversation with you. All you have to know is how to speak the Python
 language.
@@ -276,12 +282,14 @@ language words or sentences. You might want to use the standard line
 that astronauts use when they land on a faraway planet and try to speak
 with the inhabitants of the planet:
 
+~~~~ {.python}
     >>> I come in peace, please take me to your leader
       File "<stdin>", line 1
         I come in peace, please take me to your leader
              ^
     SyntaxError: invalid syntax
     >>>
+~~~~
 
 This is not going so well. Unless you think of something quickly, the
 inhabitants of the planet are likely to stab you with their spears, put
@@ -290,11 +298,14 @@ you on a spit, roast you over a fire, and eat you for dinner.
 Luckily you brought a copy of this book on your travels, and you thumb
 to this very page and try again:
 
+~~~~ {.python}
     >>> print('Hello world!')
     Hello world!
+~~~~
 
 This is looking much better, so you try to communicate some more:
 
+~~~~ {.python}
     >>> print('You must be the legendary god that comes from the sky')
     You must be the legendary god that comes from the sky
     >>> print('We have been waiting for you for a long time')
@@ -305,8 +316,9 @@ This is looking much better, so you try to communicate some more:
       File "<stdin>", line 1
         print 'We will have a feast tonight unless you say
                                                          ^
-    SyntaxError: EOL while scanning string literal
+    SyntaxError: Missing parentheses in call to 'print'
     >>>
+~~~~
 
 The conversation was going so well for a while and then you made the
 tiniest mistake using the Python language and Python brought the spears
@@ -329,18 +341,18 @@ Before we leave our first conversation with the Python interpreter, you
 should probably know the proper way to say "good-bye" when interacting
 with the inhabitants of Planet Python:
 
+~~~~ {.python}
     >>> good-bye
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     NameError: name 'good' is not defined
-
     >>> if you don't mind, I need to leave
       File "<stdin>", line 1
         if you don't mind, I need to leave
                  ^
     SyntaxError: invalid syntax
-
     >>> quit()
+~~~~
 
 You will notice that the error is different for the first two incorrect
 attempts. The second error is different because *if* is a
@@ -348,7 +360,7 @@ reserved word and Python saw the reserved word and thought we were
 trying to say something but got the syntax of the sentence wrong.
 
 The proper way to say "good-bye" to Python is to enter
-*quit()* at the interactive chevron `\>\>\>`
+*quit()* at the interactive chevron `>>>`
 prompt. It would have probably taken you quite a while to guess that
 one, so having a book handy probably will turn out to be helpful.
 
@@ -366,9 +378,11 @@ The CPU understands a language we call *machine
 language*. Machine language is very simple and frankly very
 tiresome to write because it is represented all in zeros and ones:
 
+~~~~
     001010001110100100101010000001111
     11100110000011101010010101101101
     ...
+~~~~
 
 Machine language seems quite simple on the surface, given that there are
 only zeros and ones, but its syntax is even more complex and far more
@@ -401,6 +415,7 @@ remembered and we can use that symbolic name to retrieve the value
 later. We use the term *variable* to refer to the labels
 we use to refer to this stored data.
 
+~~~~ {.python}
     >>> x = 6
     >>> print(x)
     6
@@ -408,6 +423,7 @@ we use to refer to this stored data.
     >>> print(y)
     42
     >>>
+~~~~
 
 In this example, we ask Python to remember the value six and use the
 label *x* so we can retrieve the value later. We verify
@@ -438,12 +454,14 @@ is no suffix that uniquely marks a file as executable.
 If you were to open an executable file in a text editor, it would look
 completely crazy and be unreadable:
 
+~~~~
     ^?ELF^A^A^A^@^@^@^@^@^@^@^@^@^B^@^C^@^A^@^@^@\xa0\x82
     ^D^H4^@^@^@\x90^]^@^@^@^@^@^@4^@ ^@^G^@(^@$^@!^@^F^@
     ^@^@4^@^@^@4\x80^D^H4\x80^D^H\xe0^@^@^@\xe0^@^@^@^E
     ^@^@^@^D^@^@^@^C^@^@^@^T^A^@^@^T\x81^D^H^T\x81^D^H^S
     ^@^@^@^S^@^@^@^D^@^@^@^A^@^@^@^A\^D^HQVhT\x83^D^H\xe8
     ....
+~~~~
 
 It is not easy to read or write machine language, so it is nice that we
 have *interpreters* and *compilers* that
@@ -456,14 +474,16 @@ type "python", what exactly is happening?
 
 The Python interpreter is written in a high-level language called "C".
 You can look at the actual source code for the Python interpreter by
-going to [www.python.org](www.python.org) and working your way to their
+going to [www.python.org](http://www.python.org) and working your way to their
 source code. So Python is a program itself and it is compiled into
 machine code. When you installed Python on your computer (or the vendor
 installed it), you copied a machine-code copy of the translated Python
 program onto your system. In Windows, the executable machine code for
 Python itself is likely in a file with a name like:
 
+~~~~
     C:\Python35\python.exe
+~~~~
 
 That is more than you really need to know to be a Python programmer, but
 sometimes it pays to answer those little nagging questions right at the
@@ -487,11 +507,13 @@ To execute the script, you have to tell the Python interpreter the name
 of the file. In a Unix or Windows command window, you would type
 `python hello.py` as follows:
 
+~~~~ {.bash}
     csev$ cat hello.py
-    print 'Hello world!'
+    print('Hello world!')
     csev$ python hello.py
     Hello world!
     csev$
+~~~~
 
 The "csev\$" is the operating system prompt, and the "cat hello.py" is
 showing us that the file "hello.py" has a one-line Python program to
@@ -531,8 +553,10 @@ For example, look at the following text about a clown and a car. Look at
 the text and figure out the most common word and how many times it
 occurs.
 
+~~~~
     the clown ran after the car and the car ran into the tent
     and the tent fell down on the clown and the car
+~~~~
 
 Then imagine that you are doing this task looking at millions of lines
 of text. Frankly it would be quicker for you to learn Python and write a
@@ -543,23 +567,10 @@ The even better news is that I already came up with a simple program to
 find the most common word in a text file. I wrote it, tested it, and now
 I am giving it to you to use so you can save some time.
 
-    name = input('Enter file:')
-    handle = open(name, 'r')
-    text = handle.read()
-    words = text.split()
-    counts = dict()
-
-    for word in words:
-       counts[word] = counts.get(word,0) + 1
-
-    bigcount = None
-    bigword = None
-    for word,count in list(counts.items()):
-        if bigcount is None or count > bigcount:
-            bigword = word
-            bigcount = count
-
-    print(bigword, bigcount)
+\VerbatimInput{../code3/words.py}
+\begin{trinketfiles}
+../code3/words.txt
+\end{trinketfiles}
 
 You don't even need to know Python to use this program. You will need to
 get through Chapter 10 of this book to fully understand the awesome
@@ -641,6 +652,7 @@ seems to like everyone else, Python knows them personally and holds a
 grudge against them. Because of this grudge, Python takes our perfectly
 written programs and rejects them as "unfit" just to torment us.
 
+~~~~ {.python}
     >>> primt 'Hello world!'
       File "<stdin>", line 1
         primt 'Hello world!'
@@ -662,6 +674,7 @@ written programs and rejects them as "unfit" just to torment us.
                   ^
     SyntaxError: invalid syntax
     >>>
+~~~~
 
 There is little to be gained by arguing with Python. It is just a tool.
 It has no emotions and it is happy and ready to serve you whenever you
@@ -671,11 +684,11 @@ understand what you have entered.
 
 Python is much more like a dog, loving you unconditionally, having a few
 key words that it understands, looking you with a sweet look on its face
-(`\>\>\>`), and waiting for you to say something it
+(`>>>`), and waiting for you to say something it
 understands. When Python says "SyntaxError: invalid syntax", it is
 simply wagging its tail and saying, "You seemed to say something but I
 just don't understand what you meant, but please keep talking to me
-(`\>\>\>`)."
+(`>>>`)."
 
 As your programs become increasingly sophisticated, you will encounter
 three general types of errors:
@@ -861,7 +874,7 @@ Exercise 1: What is the function of the secondary memory in a computer?
 
 a\) Execute all of the computation and logic of the program\
 b) Retrieve web pages over the Internet\
-c) Store information for the long term – even beyond a power cycle\
+c) Store information for the long term, even beyond a power cycle\
 d) Take input from the user
 
 Exercise 2: What is a program?
@@ -878,17 +891,21 @@ d) A word processing document
 
 Exercise 5: What is wrong with the following code:
 
+~~~~ {.python}
     >>> primt 'Hello world!'
       File "<stdin>", line 1
         primt 'Hello world!'
                            ^
     SyntaxError: invalid syntax
     >>>
+~~~~
 
 Exercise 6: Where in the computer is a variable such as "X" stored after
 the following Python line finishes?
 
+~~~~ {.python}
     x = 123
+~~~~
 
 a\) Central processing unit\
 b) Main Memory\
@@ -898,9 +915,11 @@ e) Output Devices
 
 Exercise 7: What will the following program print out:
 
+~~~~ {.python}
     x = 43
     x = x + 1
     print(x)
+~~~~
 
 a\) 43\
 b) 44\

@@ -3,7 +3,13 @@ import sqlite3
 import json
 import time
 import ssl
+import sys
 
+# buffer is replaced by memoryview in Python 3
+buffer = memoryview
+
+# If you are in China use this URL:
+# serviceurl = "http://maps.google.cn/maps/api/geocode/json?"
 serviceurl = "http://maps.googleapis.com/maps/api/geocode/json?"
 
 # Deal with SSL certificate anomalies Python > 2.7
@@ -22,7 +28,7 @@ for line in fh:
     if count > 200 : break
     address = line.strip()
     print('')
-    cur.execute("SELECT geodata FROM Locations WHERE address= ?", (buffer(address), ))
+    cur.execute("SELECT geodata FROM Locations WHERE address= ?", (buffer(address.encode()), ))
 
     try:
         data = cur.fetchone()[0]
@@ -34,13 +40,13 @@ for line in fh:
     print('Resolving', address)
     url = serviceurl + urllib.parse.urlencode({"sensor":"false", "address": address})
     print('Retrieving', url)
-    uh = urllib.request.urlopen(url, context=scontext)
-    data = uh.read()
+    uh = urllib.request.urlopen(url)
+    data = uh.read().decode()
     print('Retrieved',len(data),'characters',data[:20].replace('\n',' '))
     count = count + 1
     try: 
         js = json.loads(str(data))
-        # print js  # We print in case unicode causes an error
+        print(js)  # We print in case unicode causes an error
     except: 
         continue
 
@@ -50,7 +56,7 @@ for line in fh:
         break
 
     cur.execute('''INSERT INTO Locations (address, geodata) 
-            VALUES ( ?, ? )''', ( buffer(address),buffer(data) ) )
+            VALUES ( ?, ? )''', ( buffer(address.encode()),buffer(data.encode()) ) )
     conn.commit() 
     time.sleep(1)
 

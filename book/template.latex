@@ -78,8 +78,14 @@ $endif$
 $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
-$if(verbatim-in-note)$
 \usepackage{fancyvrb}
+\RecustomVerbatimCommand{\VerbatimInput}{VerbatimInput}%
+{fontsize=\small,gobble=2}
+
+% Comment out extra trinket file includes in latex (used in interactive HTML version
+\usepackage{comment}
+\excludecomment{trinketfiles}
+$if(verbatim-in-note)$
 \VerbatimFootnotes
 $endif$
 $if(tables)$
@@ -138,6 +144,10 @@ $endif$
 
 \newcommand{\verbatimfont}[1]{\def\verbatim@font{#1}}%
 
+% Forwards compatibility with pandoc >1.14
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+  
 $if(title)$
 \title{$title$$if(subtitle)$\\\vspace{0.5em}{\large $subtitle$}$endif$}
 $endif$

@@ -35,12 +35,10 @@ program demonstrates a trivial use of the search function.
 
 \index{regex!search}
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        if re.search('From:', line) :
-            print(line)
+\VerbatimInput{../code3/re01.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 We open the file, loop through each line, and use the regular expression
 `search()` to only print out lines that contain the string
@@ -60,12 +58,10 @@ For example, the caret character is used in regular expressions to match
 "the beginning" of a line. We could change our program to only match
 lines where "From:" was at the beginning of the line as follows:
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        if re.search('^From:', line) :
-            print(line)
+\VerbatimInput{../code3/re02.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 Now we will only match lines that *start with* the string
 "From:". This is still a very simple example that we could have done
@@ -90,12 +86,10 @@ In the following example, the regular expression "F..m:" would match any
 of the strings "From:", "Fxxm:", "F12m:", or "F!@m:" since the period
 characters in the regular expression match any character.
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        if re.search('^F..m:', line) :
-            print(line)
+\VerbatimInput{../code3/re03.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 This is particularly powerful when combined with the ability to indicate
 that a character can be repeated any number of times using the "\*" or
@@ -107,29 +101,27 @@ one-or-more of the characters (in the case of the plus sign).
 We can further narrow down the lines that we match using a repeated
 *wild card* character in the following example:
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        if re.search('^From:.+@', line) :
-            print(line)
+\VerbatimInput{../code3/re04.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 The search string "`^`From:.+@" will successfully match lines that start
 with "From:", followed by one or more characters (".+"), followed by an
 at-sign. So this will match the following line:
 
-*` From:`*`uct.ac.za`
+*` From:`*`uct.ac.za`
 
 You can think of the ".+" wildcard as expanding to match all the
 characters between the colon character and the at-sign.
 
-*` From:`*
+*` From:`*
 
 It is good to think of the plus and asterisk characters as "pushy". For
 example, the following string would match the last at-sign in the string
 as the ".+" pushes outwards, as shown below:
 
-*` From:`*`iupui.edu`
+*` From:`*`iupui.edu`
 
 It is possible to tell an asterisk or plus sign not to be so "greedy" by
 adding another character. See the detailed documentation for information
@@ -147,11 +139,13 @@ anything that looks like an email address from any line regardless of
 format. For example, we want to pull the email addresses from each of
 the following lines:
 
-    From stephen.marquard@uct.ac.za Sat Jan  5 09:14:16 2008
-    Return-Path: <postmaster@collab.sakaiproject.org>
-              for <source@collab.sakaiproject.org>;
-    Received: (from apache@localhost)
-    Author: stephen.marquard@uct.ac.za
+~~~~
+From stephen.marquard@uct.ac.za Sat Jan  5 09:14:16 2008
+Return-Path: <postmaster@collab.sakaiproject.org>
+          for <source@collab.sakaiproject.org>;
+Received: (from apache@localhost)
+Author: stephen.marquard@uct.ac.za
+~~~~
 
 We don't want to write code for each of the types of lines, splitting
 and slicing differently for each line. This following program uses
@@ -161,10 +155,10 @@ and extract one or more addresses from each of those lines.
 \index{findall}
 \index{regex!findall}
 
-    import re
-    s = 'Hello from csev@umich.edu to cwen@iupui.edu about the meeting @2PM'
-    lst = re.findall('\S+@\S+', s)
-    print(lst)
+\VerbatimInput{../code3/re05.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 The `findall()` method searches the string in the second
 argument and returns a list of all of the strings that look like email
@@ -173,7 +167,9 @@ non-whitespace character (`\\`S).
 
 The output of the program would be:
 
-    ['csev@umich.edu', 'cwen@iupui.edu']
+~~~~
+['csev@umich.edu', 'cwen@iupui.edu']
+~~~~
 
 Translating the regular expression, we are looking for substrings that
 have at least one non-whitespace character, followed by an at-sign,
@@ -187,13 +183,10 @@ are no non-blank characters *before* the at-sign. We can
 use this regular expression in a program to read all the lines in a file
 and print out anything that looks like an email address as follows:
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        x = re.findall('\S+@\S+', line)
-        if len(x) > 0 :
-            print(x)
+\VerbatimInput{../code3/re06.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 We read each line and then extract all the substrings that match our
 regular expression. Since `findall()` returns a list, we
@@ -204,15 +197,17 @@ looks like an email address.
 If we run the program on `mbox.txt` we get the following
 output:
 
-    ['wagnermr@iupui.edu']
-    ['cwen@iupui.edu']
-    ['<postmaster@collab.sakaiproject.org>']
-    ['<200801032122.m03LMFo4005148@nakamura.uits.iupui.edu>']
-    ['<source@collab.sakaiproject.org>;']
-    ['<source@collab.sakaiproject.org>;']
-    ['<source@collab.sakaiproject.org>;']
-    ['apache@localhost)']
-    ['source@collab.sakaiproject.org;']
+~~~~
+['wagnermr@iupui.edu']
+['cwen@iupui.edu']
+['<postmaster@collab.sakaiproject.org>']
+['<200801032122.m03LMFo4005148@nakamura.uits.iupui.edu>']
+['<source@collab.sakaiproject.org>;']
+['<source@collab.sakaiproject.org>;']
+['<source@collab.sakaiproject.org>;']
+['apache@localhost)']
+['source@collab.sakaiproject.org;']
+~~~~
 
 Some of our email addresses have incorrect characters like "`<`" or ";"
 at the beginning or end. Let's declare that we are only interested in
@@ -227,7 +222,9 @@ little more explicit in terms of the characters we will match.
 
 Here is our new regular expression:
 
-    [a-zA-Z0-9]\S*@\S*[a-zA-Z]
+~~~~
+[a-zA-Z0-9]\S*@\S*[a-zA-Z]
+~~~~
 
 This is getting a little complicated and you can begin to see why
 regular expressions are their own little language unto themselves.
@@ -245,23 +242,22 @@ character immediately to the left of the plus or asterisk.
 
 If we use this expression in our program, our data is much cleaner:
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        x = re.findall('[a-zA-Z0-9]\S*@\S*[a-zA-Z]', line)
-        if len(x) > 0 :
-            print(x)
+\VerbatimInput{../code3/re07.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
-    ...
-    ['wagnermr@iupui.edu']
-    ['cwen@iupui.edu']
-    ['postmaster@collab.sakaiproject.org']
-    ['200801032122.m03LMFo4005148@nakamura.uits.iupui.edu']
-    ['source@collab.sakaiproject.org']
-    ['source@collab.sakaiproject.org']
-    ['source@collab.sakaiproject.org']
-    ['apache@localhost']
+~~~~
+...
+['wagnermr@iupui.edu']
+['cwen@iupui.edu']
+['postmaster@collab.sakaiproject.org']
+['200801032122.m03LMFo4005148@nakamura.uits.iupui.edu']
+['source@collab.sakaiproject.org']
+['source@collab.sakaiproject.org']
+['source@collab.sakaiproject.org']
+['apache@localhost']
+~~~~
 
 Notice that on the "source@collab.sakaiproject.org" lines, our regular
 expression eliminated two letters at the end of the string ("`>`;").
@@ -280,15 +276,19 @@ Combining searching and extracting
 If we want to find numbers on lines that start with the string "X-" such
 as:
 
-    X-DSPAM-Confidence: 0.8475
-    X-DSPAM-Probability: 0.0000
+~~~~
+X-DSPAM-Confidence: 0.8475
+X-DSPAM-Probability: 0.0000
+~~~~
 
 we don't just want any floating-point numbers from any lines. We only
 want to extract numbers from lines that have the above syntax.
 
 We can construct the following regular expression to select the lines:
 
-    ^X-.*: [0-9.]+
+~~~~
+^X-.*: [0-9.]+
+~~~~
 
 Translating this, we are saying, we want lines that start with "X-",
 followed by zero or more characters (".\*"), followed by a colon (":")
@@ -300,20 +300,20 @@ that inside the square brackets, the period matches an actual period
 This is a very tight expression that will pretty much match only the
 lines we are interested in as follows:
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        if re.search('^X\S*: [0-9.]+', line) :
-            print(line)
+\VerbatimInput{../code3/re10.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 When we run the program, we see the data nicely filtered to show only
 the lines we are looking for.
 
-    X-DSPAM-Confidence: 0.8475
-    X-DSPAM-Probability: 0.0000
-    X-DSPAM-Confidence: 0.6178
-    X-DSPAM-Probability: 0.0000
+~~~~
+X-DSPAM-Confidence: 0.8475
+X-DSPAM-Probability: 0.0000
+X-DSPAM-Confidence: 0.6178
+X-DSPAM-Probability: 0.0000
+~~~~
 
 But now we have to solve the problem of extracting the numbers. While it
 would be simple enough to use `split`, we can use another
@@ -334,13 +334,10 @@ matches the regular expression.
 
 So we make the following change to our program:
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        x = re.findall('^X\S*: ([0-9.]+)', line)
-        if len(x) > 0 :
-            print(x)
+\VerbatimInput{../code3/re11.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 Instead of calling `search()`, we add parentheses around the
 part of the regular expression that represents the floating-point number
@@ -349,13 +346,15 @@ floating-point number portion of the matching string.
 
 The output from this program is as follows:
 
-    ['0.8475']
-    ['0.0000']
-    ['0.6178']
-    ['0.0000']
-    ['0.6961']
-    ['0.0000']
-    ..
+~~~~
+['0.8475']
+['0.0000']
+['0.6178']
+['0.0000']
+['0.6961']
+['0.0000']
+..
+~~~~
 
 The numbers are still in a list and need to be converted from strings to
 floating point, but we have used the power of regular expressions to
@@ -370,13 +369,10 @@ If we wanted to extract all of the revision numbers (the integer number
 at the end of these lines) using the same technique as above, we could
 write the following program:
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        x = re.findall('^Details:.*rev=([0-9]+)', line)
-        if len(x) > 0:
-            print(x)
+\VerbatimInput{../code3/re12.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 Translating our regular expression, we are looking for lines that start
 with "Details:", followed by any number of characters (".\*"), followed
@@ -386,11 +382,13 @@ number at the end of the line, so we surround "[0-9]+" with parentheses.
 
 When we run the program, we get the following output:
 
-    ['39772']
-    ['39771']
-    ['39770']
-    ['39769']
-    ...
+~~~~
+['39772']
+['39771']
+['39770']
+['39769']
+...
+~~~~
 
 Remember that the "[0-9]+" is "greedy" and it tries to make as large a
 string of digits as possible before extracting those digits. This
@@ -402,7 +400,9 @@ Now we can use regular expressions to redo an exercise from earlier in
 the book where we were interested in the time of day of each mail
 message. We looked for lines of the form:
 
-    From stephen.marquard@uct.ac.za Sat Jan  5 09:14:16 2008
+~~~~
+From stephen.marquard@uct.ac.za Sat Jan  5 09:14:16 2008
+~~~~
 
 and wanted to extract the hour of the day for each line. Previously we
 did this with two calls to `split`. First the line was split
@@ -419,7 +419,9 @@ balloon to 10-15 lines of code that was pretty hard to read.
 We can do this in a far simpler way with the following regular
 expression:
 
-    ^From .* [0-9][0-9]:
+~~~~
+^From .* [0-9][0-9]:
+~~~~
 
 The translation of this regular expression is that we are looking for
 lines that start with "From " (note the space), followed by any number
@@ -430,24 +432,26 @@ the kinds of lines we are looking for.
 In order to pull out only the hour using `findall()`, we add
 parentheses around the two digits as follows:
 
-    ^From .* ([0-9][0-9]):
+~~~~
+^From .* ([0-9][0-9]):
+~~~~
 
 This results in the following program:
 
-    import re
-    hand = open('mbox-short.txt')
-    for line in hand:
-        line = line.rstrip()
-        x = re.findall('^From .* ([0-9][0-9]):', line)
-        if len(x) > 0 : print(x)
+\VerbatimInput{../code3/re13.py} 
+\begin{trinketfiles}
+../code3/mbox-short.txt
+\end{trinketfiles}
 
 When the program runs, it produces the following output:
 
-    ['09']
-    ['18']
-    ['16']
-    ['15']
-    ...
+~~~~
+['09']
+['18']
+['16']
+['15']
+...
+~~~~
 
 Escape character
 ----------------
@@ -461,9 +465,11 @@ We can indicate that we want to simply match a character by prefixing
 that character with a backslash. For example, we can find money amounts
 with the following regular expression.
 
-    import re
-    x = 'We just received $10.00 for cookies.'
-    y = re.findall('\$[0-9.]+',x)
+~~~~ {.python}
+import re
+x = 'We just received $10.00 for cookies.'
+y = re.findall('\$[0-9.]+',x)
+~~~~
 
 Since we prefix the dollar sign with a backslash, it actually matches
 the dollar sign in the input string instead of matching the "end of
@@ -535,8 +541,8 @@ of a word.
 `\\`D Matches any non-digit character; equivalent to the set
 [`^`0-9].
 
-Bonus section for Unix users
-----------------------------
+Bonus section for Unix / Linux users
+------------------------------------
 
 Support for searching files using regular expressions was built into the
 Unix operating system since the 1960s and it is available in nearly all
@@ -550,11 +556,13 @@ that does pretty much the same as the `search()` examples in
 this chapter. So if you have a Macintosh or Linux system, you can try
 the following commands in your command-line window.
 
-    $ grep '^From:' mbox-short.txt
-    From: stephen.marquard@uct.ac.za
-    From: louis@media.berkeley.edu
-    From: zqian@umich.edu
-    From: rjlowe@iupui.edu
+~~~~ {.shell}
+$ grep '^From:' mbox-short.txt
+From: stephen.marquard@uct.ac.za
+From: louis@media.berkeley.edu
+From: zqian@umich.edu
+From: rjlowe@iupui.edu
+~~~~
 
 This tells `grep` to show you lines that start with the
 string "From:" in the file `mbox-short.txt`. If you
@@ -577,43 +585,49 @@ viewed in the Python interpreter in interactive mode.
 
 You can bring up an interactive help system using `help()`.
 
-    >>> help()
+~~~~
+>>> help()
 
-    Welcome to Python 2.6!  This is the online help utility.
+Welcome to Python 2.6!  This is the online help utility.
 
-    If this is your first time using Python, you should definitely check out
-    the tutorial on the Internet at http://docs.python.org/tutorial/.
+If this is your first time using Python, you should definitely check out
+the tutorial on the Internet at http://docs.python.org/tutorial/.
 
-    Enter the name of any module, keyword, or topic to get help on writing
-    Python programs and using Python modules.  To quit this help utility and
-    return to the interpreter, just type "quit".
+Enter the name of any module, keyword, or topic to get help on writing
+Python programs and using Python modules.  To quit this help utility and
+return to the interpreter, just type "quit".
 
-    To get a list of available modules, keywords, or topics, type "modules",
-    "keywords", or "topics".  Each module also comes with a one-line summary
-    of what it does; to list the modules whose summaries contain a given word
-    such as "spam", type "modules spam".
+To get a list of available modules, keywords, or topics, type "modules",
+"keywords", or "topics".  Each module also comes with a one-line summary
+of what it does; to list the modules whose summaries contain a given word
+such as "spam", type "modules spam".
 
-    help> modules
+help> modules
+~~~~
 
 If you know what module you want to use, you can use the
 `dir()` command to find the methods in the module as follows:
 
-    >>> import re
-    >>> dir(re)
-    [.. 'compile', 'copy_reg', 'error', 'escape', 'findall',
-    'finditer', 'match', 'purge', 'search', 'split', 'sre_compile',
-    'sre_parse', 'sub', 'subn', 'sys', 'template']
+~~~~ {.python .trinket}
+>>> import re
+>>> dir(re)
+[.. 'compile', 'copy_reg', 'error', 'escape', 'findall',
+'finditer', 'match', 'purge', 'search', 'split', 'sre_compile',
+'sre_parse', 'sub', 'subn', 'sys', 'template']
+~~~~
 
 You can also get a small amount of documentation on a particular method
 using the dir command.
 
-    >>> help (re.search)
-    Help on function search in module re:
+~~~~ {.python .trinket}
+>>> help (re.search)
+Help on function search in module re:
 
-    search(pattern, string, flags=0)
-        Scan through string looking for a match to the pattern, returning
-        a match object, or None if no match was found.
-    >>>
+search(pattern, string, flags=0)
+    Scan through string looking for a match to the pattern, returning
+    a match object, or None if no match was found.
+>>>
+~~~~
 
 The built-in documentation is not very extensive, but it can be helpful
 when you are in a hurry or don't have access to a web browser or search
@@ -653,33 +667,39 @@ wild card
 Exercises
 ---------
 
-Exercise 1: Write a simple program to simulate the operation of the
+**Exercise 1:** Write a simple program to simulate the operation of the
 `grep` command on Unix. Ask the user to enter a regular
 expression and count the number of lines that matched the regular
 expression:
 
-    $ python grep.py
-    Enter a regular expression: ^Author
-    mbox.txt had 1798 lines that matched ^Author
+~~~~
+$ python grep.py
+Enter a regular expression: ^Author
+mbox.txt had 1798 lines that matched ^Author
 
-    $ python grep.py
-    Enter a regular expression: ^X-
-    mbox.txt had 14368 lines that matched ^X-
+$ python grep.py
+Enter a regular expression: ^X-
+mbox.txt had 14368 lines that matched ^X-
 
-    $ python grep.py
-    Enter a regular expression: java$
-    mbox.txt had 4218 lines that matched java$
+$ python grep.py
+Enter a regular expression: java$
+mbox.txt had 4218 lines that matched java$
+~~~~
 
-Exercise 2: Write a program to look for lines of the form
+**Exercise 2:** Write a program to look for lines of the form
 
+~~~~
 `New Revision: 39772`
+~~~~
 
 and extract the number from each of the lines using a regular expression
 and the `findall()` method. Compute the average of the
 numbers and print out the average.
 
-    Enter file:mbox.txt
-    38549.7949721
+~~~~
+Enter file:mbox.txt
+38549.7949721
 
-    Enter file:mbox-short.txt
-    39756.9259259
+Enter file:mbox-short.txt
+39756.9259259
+~~~~

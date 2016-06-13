@@ -1,9 +1,10 @@
 import sqlite3
-import urllib.request, urllib.parse, urllib.error
+import urllib.error
 import ssl 
 from urllib.parse import urljoin
 from urllib.parse import urlparse
-from BeautifulSoup import *
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
 
 # Deal with SSL certificate anomalies Python > 2.7
 # scontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
@@ -72,14 +73,14 @@ while True:
     # If we are retrieving this page, there should be no links from it
     cur.execute('DELETE from Links WHERE from_id=?', (fromid, ) )
     try:
-        document = urllib.request.urlopen(url, context=scontext)
+        document = urlopen(url, context=scontext)
 
         html = document.read()
         if document.getcode() != 200 :
             print("Error on page: ",document.getcode())
             cur.execute('UPDATE Pages SET error=? WHERE url=?', (document.getcode(), url) )
 
-        if 'text/html' != document.info().gettype() :
+        if 'text/html' != document.info().get_content_type() :
             print("Ignore non text/html page")
             cur.execute('DELETE FROM Pages WHERE url=?', ( url, ) ) 
             cur.execute('UPDATE Pages SET error=0 WHERE url=?', (url, ) )
@@ -88,7 +89,9 @@ while True:
 
         print('('+str(len(html))+')', end=' ')
 
-        soup = BeautifulSoup(html)
+# html5lib is a 3rd party HTML parser.  Install with 'pip install html5lib'
+# or change the line below by replaceing 'html5lib' with 'html.parser'
+        soup = BeautifulSoup(html, "html5lib")
     except KeyboardInterrupt:
         print('')
         print('Program interrupted by user...')
@@ -100,7 +103,7 @@ while True:
         continue
 
     cur.execute('INSERT OR IGNORE INTO Pages (url, html, new_rank) VALUES ( ?, NULL, 1.0 )', ( url, ) ) 
-    cur.execute('UPDATE Pages SET html=? WHERE url=?', (buffer(html), url ) )
+    cur.execute('UPDATE Pages SET html=? WHERE url=?', (memoryview(html), url ) )
     conn.commit()
 
     # Retrieve all of the anchor tags
